@@ -236,4 +236,4 @@ Principes de conception :
 
 ## Licence
 
-À ajouter selon ton choix (par exemple MIT).
+Licence MIT. Voir le fichier pour plus d'infos.
