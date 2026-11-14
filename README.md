@@ -18,4 +18,4 @@ Fishing,
 Rock paper cisors,
 Edge surf.
 
-We are working every day on this project, so make sure to follow and star !
+We are working every day and very hard on this project, so make sure to follow and star !
