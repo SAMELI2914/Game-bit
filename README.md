@@ -1,6 +1,6 @@
 # Game:bit
 
-**Une console de jeux rétro pour micro:bit V2** : 15 jeux, un menu, une animation de démarrage et un mode veille, le tout sur l'écran 5×5 de la carte.
+**Une console de jeux rétro pour micro:bit V2** : 23 jeux, deux sous-menus, une animation de démarrage et un mode veille, le tout sur l'écran 5×5 de la carte.
 
 Programmé en **MakeCode (JavaScript)**, dans un seul fichier.
 
@@ -12,6 +12,7 @@ Programmé en **MakeCode (JavaScript)**, dans un seul fichier.
 - [Installation](#installation)
 - [Menu principal](#menu-principal)
 - [Sous-menu A](#sous-menu-a)
+- [Sous-menu B](#sous-menu-b)
 - [Les jeux](#les-jeux)
 - [Pause](#pause)
 - [Fin de partie](#fin-de-partie)
@@ -19,6 +20,7 @@ Programmé en **MakeCode (JavaScript)**, dans un seul fichier.
 - [Réglages](#réglages)
 - [Structure du code](#structure-du-code)
 - [Limites connues](#limites-connues)
+- [Licence](#licence)
 
 ---
 
@@ -47,8 +49,8 @@ Au démarrage, une animation s'affiche : le point du milieu s'allume, puis ses v
 
 | Geste | Action |
 |---|---|
-| **A** | Ouvre le sous-menu |
-| **B** | Flappy Bird |
+| **A** | Ouvre le sous-menu A |
+| **B** | Ouvre le sous-menu B |
 | **Logo tactile** | Chrome Dino |
 | **Secouer** | Pong |
 | **A+B** | Snake |
@@ -64,6 +66,18 @@ Au démarrage, une animation s'affiche : le point du milieu s'allume, puis ses v
 | **Logo** | Retour au menu principal |
 
 Les 13 options, dans l'ordre : Space Invaders, Tetris, Geometry Dash, Flèche, Simon, Labyrinthe, Plus ou moins, Stack, Pêche, Pierre-feuille-ciseaux, Edge Surf, Son, Veille.
+
+---
+
+## Sous-menu B
+
+| Touche | Action |
+|---|---|
+| **A** | Option suivante |
+| **B** | Valider |
+| **Logo** | Retour au menu principal |
+
+Les 9 options, dans l'ordre : Flappy Bird, Casse-briques, Esquive, Astéroïdes, Doodle Jump, Course, Rythme, Tir au but, Crossy Road.
 
 ---
 
@@ -86,6 +100,14 @@ Les 13 options, dans l'ordre : Space Invaders, Tetris, Geometry Dash, Flèche, S
 | **Pierre-feuille-ciseaux** | Pierre | Feuille | Ciseaux |
 | **Labyrinthe** | voir plus bas | voir plus bas | voir plus bas |
 | **Edge Surf** | Case à gauche | Case à droite | - |
+| **Casse-briques** | Raquette à gauche | Raquette à droite | - |
+| **Esquive** | Case à gauche | Case à droite | - |
+| **Astéroïdes** | Gauche | Droite | Tirer |
+| **Doodle Jump** | Gauche | Droite | - |
+| **Course** | Voie à gauche | Voie à droite | - |
+| **Rythme** | Colonne gauche | Colonne droite | Colonne centrale |
+| **Tir au but** | Viser à gauche | Viser à droite | Tirer |
+| **Crossy Road** | Avancer | Avancer | - |
 
 ### Détails par jeu
 
@@ -102,6 +124,14 @@ Les 13 options, dans l'ordre : Space Invaders, Tetris, Geometry Dash, Flèche, S
 - **Stack** : empile les barres. Seule la partie qui chevauche la rangée du dessous est conservée.
 - **Pêche** : appuie quand le curseur est entre les deux repères.
 - **Pierre-feuille-ciseaux** : contre la carte. Victoire = 1 point, égalité = on rejoue, défaite = fin.
+- **Casse-briques** : 10 briques sur 2 rangées. Selon la LED de la raquette qui touche la balle, elle repart à gauche ou à droite. Quand tout est détruit, tu gagnes 5 points et la balle accélère.
+- **Esquive** : des lignes pleines avec un trou descendent. Passe par le trou. Un point par ligne passée.
+- **Astéroïdes** : des rochers descendent. Détruis-les (un seul tir à la fois) ou évite-les. Un rocher qui touche ton vaisseau met fin à la partie.
+- **Doodle Jump** : ton point rebondit tout seul. Atterris sur les plateformes qui descendent. Tu peux sortir d'un côté pour réapparaître de l'autre. Tomber en bas = fin.
+- **Course** : route à 3 voies, bords en pointillés qui défilent. Évite les voitures. Un point par voiture dépassée.
+- **Rythme** : les notes tombent sur 3 colonnes (gauche = A, centre = A+B, droite = B). Appuie quand elles sont sur les deux lignes du bas. Tu as 2 vies, affichées par 2 points en bas.
+- **Tir au but** : le gardien fait des allers-retours. Vise avec A et B, puis tire avec A+B quand il est dans une autre zone que ta visée. Un arrêt met fin à la partie. Il devient imprévisible à partir de 5 buts.
+- **Crossy Road** : fais avancer ton point de ligne en ligne (herbe avec des arbres, routes avec des voitures). Avance avec A ou B, glisse à gauche ou à droite en **inclinant la carte**. Après 3 s sans avancer la carte bipe, à 5 s l'aigle t'attrape.
 
 ### Labyrinthe
 
@@ -174,6 +204,16 @@ Valeurs à modifier dans le code pour ajuster la difficulté :
 | Labyrinthe | `30000` et `+= 10000` | Temps de départ et bonus (ms) |
 | Labyrinthe | `invY = -1` | Inverse l'inclinaison avant/arrière |
 | Edge Surf | `300` (inclinaison) | Sensibilité de l'inclinaison |
+| Casse-briques | `400` dans `Math.max(110, 400 - cbNiv * 25 - score * 2)` | Vitesse de la balle |
+| Esquive | `650` dans `Math.max(260, 650 - score * 10)` | Vitesse des lignes |
+| Astéroïdes | `650` dans `Math.max(220, 650 - score * 8)` | Vitesse des rochers |
+| Doodle Jump | `280` dans `Math.max(130, 280 - score * 2)` | Vitesse du rebond |
+| Course | `550` dans `Math.max(200, 550 - score * 8)` | Vitesse des voitures |
+| Rythme | `480` dans `Math.max(180, 480 - score * 5)` | Vitesse des notes |
+| Rythme | `vies = 2` dans `lancerRh()` | Nombre de vies |
+| Tir au but | `420` dans `Math.max(130, 420 - score * 20)` | Vitesse du gardien |
+| Crossy Road | `5000` et `3000` | Délai de l'aigle et du bip (ms) |
+| Crossy Road | `300` (inclinaison) | Sensibilité de l'inclinaison |
 | Animation | `basic.pause(250)` | Vitesse de l'animation d'ouverture |
 
 ---
@@ -206,6 +246,15 @@ Tout est dans un seul fichier, organisé autour d'une **machine à états** : la
 | 19 | Choix du mode d'Edge Surf |
 | 20 | Edge Surf |
 | 21 | Veille |
+| 22 | Sous-menu B |
+| 23 | Casse-briques |
+| 24 | Esquive |
+| 25 | Astéroïdes |
+| 26 | Doodle Jump |
+| 27 | Course |
+| 28 | Rythme |
+| 29 | Tir au but |
+| 30 | Crossy Road |
 
 Principes de conception :
 
@@ -220,7 +269,7 @@ Principes de conception :
 2. Écris une fonction `lancerMonJeu()` : `mode = 3`, `score = 0`, `decompte()`, initialisation, puis `mode = <ton numéro>`.
 3. Ajoute un bloc `else if (mode == <ton numéro>)` dans la boucle de jeu unique (logique et dessin dans `buf`).
 4. Ajoute les actions des boutons dans les gestionnaires A, B et A+B.
-5. Ajoute le numéro dans `enJeu()`, dans `rejouer()`, et une entrée dans le sous-menu (`afficherSous()`, validation avec B, modulo de A).
+5. Ajoute le numéro dans `enJeu()`, dans `rejouer()`, et une entrée dans un sous-menu (`afficherSous()` ou `afficherSousB()`, validation avec B, modulo de A).
 6. Appelle `finPartie()` pour terminer la partie.
 
 ---
@@ -229,11 +278,11 @@ Principes de conception :
 
 - Le code n'a pas été testé sur toutes les cartes. En cas d'erreur de compilation dans MakeCode, ouvre une *issue*.
 - L'écran des jeux est en **tout ou rien** : les LED ne sont pas atténuées, donc les « points faibles » sont représentés par un clignotement lent.
-- Dans le menu principal, **A+B** doit être pressé presque en même temps, sinon la carte peut lancer Flappy Bird ou ouvrir le sous-menu.
+- Dans le menu principal, **A+B** doit être pressé presque en même temps, sinon la carte peut ouvrir un sous-menu.
 - Le logo tactile peut se déclencher par accident pendant une partie (cela met en pause).
 
 ---
 
 ## Licence
 
-Licence MIT. Voir le fichier pour plus d'infos.
+Ce projet est distribué sous licence [MIT](LICENSE).
